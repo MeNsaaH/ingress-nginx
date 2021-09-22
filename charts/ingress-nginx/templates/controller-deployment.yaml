@@ -83,8 +83,12 @@ spec:
           {{- if .Values.defaultBackend.enabled }}
             - --default-backend-service=$(POD_NAMESPACE)/{{ include "ingress-nginx.defaultBackend.fullname" . }}
           {{- end }}
-          {{- if .Values.controller.publishService.enabled }}
+          {{- if and .Values.controller.publishService.enabled .Values.controller.publishStatusAddress.enabled }}
+            {{- fail "publishService.enabled and publishStatusAddress.enabled are mutually exclusive" }}
+          {{- else if .Values.controller.publishService.enabled }}
             - --publish-service={{ template "ingress-nginx.controller.publishServicePath" . }}
+          {{- else }}
+            - --publish-status-address={{ .Values.controller.publishStatusAddress.address }}
           {{- end }}
             - --election-id={{ .Values.controller.electionID }}
             - --controller-class={{ .Values.controller.ingressClassResource.controllerValue }}

@@ -132,6 +132,13 @@ controller:
     ##
     pathOverride: ""
 
+  ## Allows customization of the source of the IP address or FQDN to report in
+  ## the ingress status field. publishStatusAddress and publishService are
+  ## mutually exclusive. Only one can be set
+  publishStatusAddress:
+    enabled: false
+    address: ""
+
   ## Limit the scope of the controller
   ##
   scope:
